@@ -10,6 +10,8 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.pipeline import Pipeline
 from sklearn.feature_selection import f_regression
 import statsmodels.api as sm
+from joblib import dump
+
 
 class HousePricePrediction:
     def __init__(self, data_path):
@@ -156,6 +158,10 @@ class HousePricePrediction:
         
         pipeline.fit(self.X_train, self.y_train)
         self.best_model = pipeline
+
+        # Save the trained model to a file
+        dump(self.best_model, 'trained_model.joblib')
+        print("\nTrained model saved as 'trained_model.joblib'.")
         
         # Predictions
         y_pred = self.best_model.predict(self.X_test)
@@ -179,7 +185,7 @@ class HousePricePrediction:
         plt.ylabel('Residuals')
         plt.axhline(y=0, color='r', linestyle='--')
         plt.show()
-    
+
     def predict_price(self, features):
         """
         Price Prediction Method
